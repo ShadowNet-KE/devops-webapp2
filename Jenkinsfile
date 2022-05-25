@@ -1,7 +1,7 @@
 pipeline {
   agent {
     node {
-      label 'agent1'
+      label 'docker'
     }
 
   }
@@ -41,8 +41,8 @@ echo run parallel!!'''
       steps {
         sh '''pwd
 cd ./docker
-docker build -t cloudacademydevops/webapp1-2019:$BUILD_ID .
-docker tag cloudacademydevops/webapp1-2019:$BUILD_ID cloudacademydevops/webapp1-2019:latest
+docker build -t buluma/webapp1-2019:$BUILD_ID .
+docker tag buluma/webapp1-2019:$BUILD_ID buluma/webapp1-2019:latest
 docker images
 '''
       }
@@ -50,11 +50,11 @@ docker images
     stage('Publish') {
       steps {
         script {
-          withCredentials([usernamePassword(credentialsId: 'ca-dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]){
+          withCredentials([usernamePassword(credentialsId: '985ac3d1-8c9e-461f-8f0c-489ab96cb40b', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]){
             sh '''
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-docker push cloudacademydevops/webapp1-2019:$BUILD_ID
-docker push cloudacademydevops/webapp1-2019:latest
+docker push buluma/webapp1-2019:$BUILD_ID
+docker push buluma/webapp1-2019:latest
 '''
           }
         }
